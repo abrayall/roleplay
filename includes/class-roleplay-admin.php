@@ -78,7 +78,7 @@ class Roleplay_Admin {
                     <tr>
                         <th class="column-name"><?php _e('Name', 'roleplay'); ?></th>
                         <th class="column-slug"><?php _e('Slug', 'roleplay'); ?></th>
-                        <th class="column-capabilities"><?php _e('Capabilities', 'roleplay'); ?></th>
+                        <th class="column-permissions"><?php _e('Permissions', 'roleplay'); ?></th>
                         <th class="column-actions"><?php _e('Actions', 'roleplay'); ?></th>
                     </tr>
                 </thead>
@@ -98,7 +98,7 @@ class Roleplay_Admin {
         <dialog id="roleplay-delete-dialog" class="roleplay-dialog">
             <h3><?php _e('Delete Role', 'roleplay'); ?></h3>
             <p><?php _e('Are you sure you want to delete this role?', 'roleplay'); ?></p>
-            <p class="roleplay-dialog-warning"><?php _e('Users assigned to this role will lose their capabilities. Consider reassigning them first.', 'roleplay'); ?></p>
+            <p class="roleplay-dialog-warning"><?php _e('Users assigned to this role will lose their permissions. Consider reassigning them first.', 'roleplay'); ?></p>
             <div class="roleplay-dialog-actions">
                 <button type="button" class="button button-primary" id="roleplay-confirm-delete"><?php _e('Delete', 'roleplay'); ?></button>
                 <button type="button" class="button" id="roleplay-cancel-delete"><?php _e('Cancel', 'roleplay'); ?></button>
@@ -121,10 +121,11 @@ class Roleplay_Admin {
                             <input type="text" id="roleplay-role-name" name="name" class="regular-text" required>
                         </p>
 
-                        <div class="roleplay-capabilities">
-                            <label><?php _e('Capabilities', 'roleplay'); ?></label>
-                            <div id="roleplay-capabilities-list" class="roleplay-capabilities-grid">
-                                <!-- Capabilities loaded via AJAX -->
+                        <div class="roleplay-permissions">
+                            <label><?php _e('Permissions', 'roleplay'); ?></label>
+                            <input type="text" id="roleplay-permissions-filter" class="regular-text" placeholder="<?php esc_attr_e('Filter...', 'roleplay'); ?>">
+                            <div id="roleplay-permissions-list" class="roleplay-permissions-grid">
+                                <!-- Permissions loaded via AJAX -->
                             </div>
                         </div>
                     </form>

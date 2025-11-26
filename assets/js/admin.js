@@ -5,7 +5,7 @@
         init: function() {
             this.bindEvents();
             this.loadRoles();
-            this.loadCapabilities();
+            this.loadPermissions();
         },
 
         bindEvents: function() {
@@ -16,9 +16,10 @@
             $(document).on('click', '.roleplay-delete-role', this.showDeleteDialog.bind(this));
             $('#roleplay-confirm-delete').on('click', this.confirmDelete.bind(this));
             $('#roleplay-cancel-delete').on('click', this.closeDeleteDialog.bind(this));
+            $('#roleplay-permissions-filter').on('input', this.filterPermissions.bind(this));
 
             // Close modal on backdrop click
-            $('#roleplay-modal').on('click', function(e) {
+            $('#roleplay-modal').on('mousedown', function(e) {
                 if ($(e.target).is('#roleplay-modal')) {
                     Roleplay.closeModal();
                 }
@@ -100,7 +101,7 @@
                     html += '<tr>';
                     html += '<td class="column-name"><strong>' + Roleplay.escapeHtml(role.name) + '</strong></td>';
                     html += '<td class="column-slug"><span class="roleplay-slug">' + Roleplay.escapeHtml(role.slug) + '</span></td>';
-                    html += '<td class="column-capabilities">' + role.capabilities_summary.replace(/\n/g, '<br>') + '</td>';
+                    html += '<td class="column-permissions">' + role.capabilities_summary.replace(/\n/g, '<br>') + '</td>';
                     html += '<td class="column-actions">';
                     html += '<button type="button" class="button roleplay-edit-role" data-slug="' + Roleplay.escapeHtml(role.slug) + '">Edit</button>';
                     if (role.slug !== 'administrator') {
@@ -138,7 +139,7 @@
             $('#roleplay-cards').html(cards);
         },
 
-        loadCapabilities: function() {
+        loadPermissions: function() {
             $.ajax({
                 url: roleplay.ajax_url,
                 type: 'POST',
@@ -148,33 +149,46 @@
                 },
                 success: function(response) {
                     if (response.success) {
-                        Roleplay.capabilities = response.data;
-                        Roleplay.renderCapabilities([]);
+                        Roleplay.permissions = response.data;
+                        Roleplay.renderPermissions([]);
                     }
                 }
             });
         },
 
-        renderCapabilities: function(selected) {
+        renderPermissions: function(selected) {
             var html = '';
 
-            if (this.capabilities) {
-                this.capabilities.forEach(function(cap) {
+            if (this.permissions) {
+                this.permissions.forEach(function(cap) {
                     var checked = selected.indexOf(cap) !== -1 ? 'checked' : '';
-                    html += '<div class="roleplay-capability-item">';
+                    html += '<div class="roleplay-permission-item">';
                     html += '<label><input type="checkbox" name="capabilities[]" value="' + Roleplay.escapeHtml(cap) + '" ' + checked + '> ' + Roleplay.escapeHtml(cap) + '</label>';
                     html += '</div>';
                 });
             }
 
-            $('#roleplay-capabilities-list').html(html);
+            $('#roleplay-permissions-list').html(html);
+        },
+
+        filterPermissions: function() {
+            var filter = $('#roleplay-permissions-filter').val().toLowerCase();
+            $('.roleplay-permission-item').each(function() {
+                var text = $(this).text().toLowerCase();
+                if (filter === '' || text.indexOf(filter) !== -1) {
+                    $(this).removeClass('hidden');
+                } else {
+                    $(this).addClass('hidden');
+                }
+            });
         },
 
         openAddModal: function() {
             $('#roleplay-modal-title').text('Add Role');
             $('#roleplay-role-slug').val('');
             $('#roleplay-role-name').val('');
-            this.renderCapabilities([]);
+            $('#roleplay-permissions-filter').val('');
+            this.renderPermissions([]);
             $('#roleplay-modal').show();
             $('#roleplay-role-name').focus();
         },
@@ -196,7 +210,8 @@
                         $('#roleplay-modal-title').text('Edit Role');
                         $('#roleplay-role-slug').val(role.slug);
                         $('#roleplay-role-name').val(role.name);
-                        Roleplay.renderCapabilities(role.capabilities);
+                        $('#roleplay-permissions-filter').val('');
+                        Roleplay.renderPermissions(role.capabilities);
                         $('#roleplay-modal').show();
                         $('#roleplay-role-name').focus();
                     }

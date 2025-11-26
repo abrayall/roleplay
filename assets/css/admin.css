@@ -21,7 +21,7 @@
     width: 15%;
 }
 
-#roleplay-table .column-capabilities {
+#roleplay-table .column-permissions {
     width: 45%;
 }
 
@@ -171,14 +171,18 @@
         max-height: 90vh;
     }
 
-    .roleplay-capability-item {
+    .roleplay-permission-item {
         width: 100% !important;
-        display: block !important;
+        display: block;
         font-size: 12px;
         padding: 4px 0;
     }
 
-    .roleplay-capability-item input[type="checkbox"] {
+    .roleplay-permission-item.hidden {
+        display: none !important;
+    }
+
+    .roleplay-permission-item input[type="checkbox"] {
         -webkit-appearance: none;
         appearance: none;
         width: 18px;
@@ -192,12 +196,12 @@
         position: relative;
     }
 
-    .roleplay-capability-item input[type="checkbox"]:checked {
+    .roleplay-permission-item input[type="checkbox"]:checked {
         background: #2271b1;
         border-color: #2271b1;
     }
 
-    .roleplay-capability-item input[type="checkbox"]:checked::after {
+    .roleplay-permission-item input[type="checkbox"]:checked::after {
         content: '';
         position: absolute;
         left: 5px;
@@ -209,7 +213,7 @@
         transform: rotate(45deg);
     }
 
-    .roleplay-capability-item input[type="checkbox"]::before {
+    .roleplay-permission-item input[type="checkbox"]::before {
         content: none !important;
         display: none !important;
         border: none !important;
@@ -217,13 +221,13 @@
         height: 0 !important;
     }
 
-    .roleplay-capability-item label {
+    .roleplay-permission-item label {
         display: flex;
         align-items: center;
         font-weight: normal !important;
     }
 
-    .roleplay-capabilities-grid {
+    .roleplay-permissions-grid {
         max-height: 200px;
     }
 }
@@ -301,6 +305,10 @@
     box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
+    resize: both;
+    overflow: auto;
+    min-width: 400px;
+    min-height: 300px;
 }
 
 .roleplay-modal-header {
@@ -334,6 +342,15 @@
     padding: 10px 20px 20px;
     overflow-y: auto;
     flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.roleplay-modal-body form {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
 }
 
 .roleplay-modal-body > p:first-child {
@@ -341,9 +358,11 @@
     margin-bottom: 10px;
 }
 
-.roleplay-modal-body label {
+.roleplay-modal-body label[for="roleplay-role-name"],
+.roleplay-permissions > label {
     display: block;
-    font-weight: 600;
+    font-weight: 700;
+    font-size: 14px;
     margin-bottom: 5px;
 }
 
@@ -351,32 +370,58 @@
     width: 100%;
 }
 
-.roleplay-capabilities {
+.roleplay-permissions {
     margin-top: 15px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
 }
 
-.roleplay-capabilities-grid {
-    max-height: 300px;
+#roleplay-permissions-filter {
+    width: 100%;
+    margin: 10px 0 0 0;
+    padding: 0 8px;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    border-radius: 3px 3px 0 0;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+#roleplay-permissions-filter:focus {
+    border-color: #ddd;
+    box-shadow: none;
+    outline: none;
+}
+
+.roleplay-permissions-grid {
+    flex: 1;
     overflow-y: auto;
     border: 1px solid #ddd;
+    border-radius: 0 0 3px 3px;
     padding: 10px;
-    margin-top: 10px;
     background: #f9f9f9;
+    min-height: 100px;
 }
 
-.roleplay-capability-item {
+.roleplay-permission-item {
     display: inline-block;
     width: 48%;
     margin-bottom: 5px;
 }
 
-.roleplay-capability-item label {
+.roleplay-permission-item.hidden {
+    display: none;
+}
+
+.roleplay-permission-item label {
     display: inline;
     font-weight: normal;
     cursor: pointer;
 }
 
-.roleplay-capability-item input {
+.roleplay-permission-item input {
     margin-right: 5px;
 }
 
